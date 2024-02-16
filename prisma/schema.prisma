@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Test {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+enum Role {
+  ADMIN
+  MODERATOR
+  NORMAL
+}
+
+model User {
+  no   Int    @id @default(autoincrement())
+  id   String @unique
+  nick String @unique
+  role Role   @default(NORMAL)
+
+  imageUrl String? @db.Text
+  imageKey String? @db.Text
+
+  password String
+  salt     String
+
+  points Int @default(0)
+  likes  Int @default(0)
+
+  token Token?
+
+  board     Board[]
+  boardLike Board[] @relation("boardLike")
+
+  provider String
+
+  joinAt  DateTime @default(now())
+  loginAt DateTime @default(now())
+}
+
+model Token {
+  token String @db.Text
+  id    String @unique
+  user  User   @relation(fields: [id], references: [id], onDelete: Cascade)
+}
+
+model Login_log {
+  no         Int      @id @default(autoincrement())
+  id         String
+  login_date DateTime
+  status     Boolean
+}
+
+model Board {
+  no      Int     @id @default(autoincrement())
+  content String @db.Text
+  imgUrl  String?
+
+  authorNo Int
+  author   User @relation(fields: [authorNo], references: [no], onDelete: Cascade)
+
+  likes User[] @relation("boardLike")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([authorNo])
+}
