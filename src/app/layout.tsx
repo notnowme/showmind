@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 
 
-import * as stylex from '@stylexjs/stylex'
-import { colors } from '@/app/styles/token.stylex'
 import Nav from '@/app/components/nav/nav';
-import NextSessionProvider from "./providers/session-provider";
-import TokenVerify from "./components/token-verify";
+import NextSessionProvider from "@/app/providers/session-provider";
+import { SocketProvider } from "@/app/providers/socket-provider";
+import TokenVerify from "@/app/components/token-verify";
 
 import "./globals.css"
+import * as stylex from '@stylexjs/stylex'
+import { colors } from '@/app/styles/token.stylex'
 
 export const metadata: Metadata = {
   title: "SHOWMIND",
@@ -23,11 +24,13 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <NextSessionProvider>
-          <TokenVerify />
-          <div id="container" {...stylex.props(styles.container())}>
-            <Nav />
-            {children}
-          </div>
+          <SocketProvider>
+            <TokenVerify />
+            <div id="container" {...stylex.props(styles.container())}>
+              <Nav />
+              {children}
+            </div>
+          </SocketProvider>
         </NextSessionProvider>
       </body>
     </html>

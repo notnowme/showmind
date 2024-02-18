@@ -39,10 +39,18 @@ model User {
   board     Board[]
   boardLike Board[] @relation("boardLike")
 
+  roomId String? 
+  chatUser ChatRoom? @relation(fields: [roomId], references: [roomId], onDelete: SetNull, onUpdate: SetNull)
+  ownedRoom ChatRoom? @relation("Owner")
+
+
   provider String
 
   joinAt  DateTime @default(now())
   loginAt DateTime @default(now())
+
+  @@unique([roomId])
+
 }
 
 model Token {
@@ -72,4 +80,20 @@ model Board {
   updatedAt DateTime @updatedAt
 
   @@index([authorNo])
+}
+
+model ChatRoom {
+  roomId String @unique
+  userId String @unique
+
+  title String
+  isPrivate Boolean
+  password String?
+
+  status Boolean
+
+  owner User @relation("Owner", fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  members User[]
+
+  createdAt DateTime
 }

@@ -1,20 +1,31 @@
+'use client';
+
 
 import * as stylex from '@stylexjs/stylex'
 import { colors, fontSizes } from '@/app/styles/token.stylex'
+import { useRouter } from 'next/navigation';
 
 interface GameListProps {
+    roomId: string;
     title: string;
     nick: string;
     userNum: number;
     status: boolean
 }
 
-const GameList = ({title, nick, userNum, status}: GameListProps) => {
+const GameList = ({roomId, title, nick, userNum, status}: GameListProps) => {
+    const router = useRouter();
+    const handleMove = () => {
+      router.push(`/show?room=${roomId}`);
+    }
     return (
         <div {...stylex.props(styles.infoContainer())}>
             <div {...stylex.props(styles.info())}>
                 <div {...stylex.props(styles.infoSize(360))}>
-                    <span {...stylex.props(styles.infoText(status))}>{title}</span>
+                    <span onClick={handleMove}
+                      {...stylex.props(styles.infoText(status))}>
+                      {title}
+                    </span>
                 </div>
                 <div {...stylex.props(styles.infoSize(210))}>
                     <span {...stylex.props(styles.infoText(status))}>{nick}</span>

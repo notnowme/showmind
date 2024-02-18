@@ -19,11 +19,37 @@ interface CreateModalProps {
 const CreateModal = ({ isOpen, onClose }: CreateModalProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
 
+    const nameRef = useRef<HTMLInputElement>(null);
+    const pwRef = useRef<HTMLInputElement>(null);
+
     const [value, setValue] = useState('open');
+    const [isPrivate, setIsPrivate] = useState(false);
     const handleOutsideClick = (e: any) => {
-        console.log('test')
         if (modalRef.current && !modalRef.current.contains(e.target)) {
             onClose(prev => !prev);
+        }
+    };
+    // 방 생성.
+    const handleCreate = async() => {
+        if(value === 'open') {
+            const name = nameRef.current?.value;
+            try {
+                const res = await fetch('/api/game/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type':'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        isPrivate: false
+                    })
+                });
+                const result = await res.json();
+                console.log(result);
+            } catch (error) {
+                console.error(`[CREATE_ROOM_ERROR]`, error);
+                return;
+            }
         }
     };
     useEffect(() => {
@@ -35,10 +61,16 @@ const CreateModal = ({ isOpen, onClose }: CreateModalProps) => {
         return () => {
             document.removeEventListener('mousedown', handleOutsideClick);
         }
-    }, [isOpen])
+    }, [isOpen]);
+
+    // 비밀번호 입력 온오프
     useEffect(() => {
-        console.log(value);
-    },[value])
+        if(value === 'private') {
+            setIsPrivate(true);
+        } else {
+            setIsPrivate(false);
+        }
+    }, [value])
     return (
         <>
             {isOpen &&
@@ -56,9 +88,31 @@ const CreateModal = ({ isOpen, onClose }: CreateModalProps) => {
                         </div>
                         <div>
                             <IoClose onClick={() => onClose(prev => !prev)}
-                                {...stylex.props(styles.icon())}/>
+                                {...stylex.props(styles.icon())} />
                         </div>
                     </div>
+                    <div {...stylex.props(styles.inputDiv())}>
+                        <div {...stylex.props(styles.textDiv())}>
+                            <h1 {...stylex.props(styles.title())}>방 제목</h1>
+                            <span {...stylex.props(styles.msg())}>방 제목을 입력해 주세요</span>
+                        </div>
+                        <input type='text' ref={nameRef}
+                            {...stylex.props(styles.input())}
+                        />
+                    </div>
+                    <div {...stylex.props(styles.inputDiv())}>
+                        <div {...stylex.props(styles.textDiv())}>
+                            <h1 {...stylex.props(styles.title(), styles.disabledText(isPrivate))}>비밀번호</h1>
+                            <span {...stylex.props(styles.msg())}>비밀번호를 입력해 주세요</span>
+                        </div>
+                        <input type='text' disabled={!isPrivate} ref={pwRef}
+                            {...stylex.props(styles.input(), styles.disbledInput(isPrivate))}
+                        />
+                    </div>
+                    <button onClick={handleCreate}
+                        {...stylex.props(styles.btn())}>
+                        방 생성하기
+                    </button>
                 </div>
             }
         </>
@@ -68,12 +122,17 @@ const CreateModal = ({ isOpen, onClose }: CreateModalProps) => {
 export default CreateModal;
 
 const styles = stylex.create({
+    textDiv: () => ({
+        display: 'flex',
+        columnGap: '10px',
+        alignItems: 'center'
+    }),
     create: () => ({
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'center',
         padding: '10px',
         width: '600px',
-        height: '400px',
         backgroundColor: colors.dp00,
         borderRadius: '5px'
     }),
@@ -94,5 +153,57 @@ const styles = stylex.create({
     }),
     text: () => ({
         fontSize: fontSizes.base
+    }),
+    inputDiv: () => ({
+        marginTop: '20px',
+        marginBottom: '20px',
+        width: '540px',
+        backgroundColor: colors.dp00,
+        display: 'flex',
+        flexDirection: 'column'
+    }),
+    title: () => ({
+        fontSize: fontSizes.lg,
+        fontWeight: 500,
+        color: colors.secondary,
+        marginBottom: '5px'
+    }),
+    input: () => ({
+        width: '100%',
+        height: '40px',
+        borderRadius: '5px',
+        border: 'none',
+        outline: 'none',
+        backgroundColor: colors.dp03,
+        fontSize: fontSizes.base,
+        color: colors.secondary,
+        padding: '0px 10px'
+    }),
+    btn: () => ({
+        marginTop: '20px',
+        width: '540px',
+        height: '40px',
+        borderRadius: '5px',
+        backgroundColor: colors.personal,
+        border: 'none',
+        outline: 'none',
+        color: 'black',
+        fontSize: fontSizes.lg,
+        fontWeight: 500,
+        opacity: {
+            default: '0.8',
+            ':hover': '1'
+        },
+        cursor: 'pointer'
+    }),
+    msg: () => ({
+        fontSize: fontSizes.sm,
+        color: colors.error
+    }),
+    disabledText: (state) => ({
+        color: state ? colors.secondary : colors.done
+    }),
+    disbledInput: (state) => ({
+        backgroundColor: state ? colors.dp03 : colors.dp01
     })
 })

@@ -8,23 +8,42 @@ import * as stylex from '@stylexjs/stylex'
 import { colors, fontSizes } from '@/app/styles/token.stylex'
 import GameList from '@/app/components/game/game-list'
 
-import {
-  MdKeyboardDoubleArrowLeft as DoubleLeft,
-  MdKeyboardDoubleArrowRight as DoubleRight,
-  MdKeyboardArrowRight as Right,
-  MdKeyboardArrowLeft as Left
-} from 'react-icons/md'
+// import {
+//   MdKeyboardDoubleArrowLeft as DoubleLeft,
+//   MdKeyboardDoubleArrowRight as DoubleRight,
+//   MdKeyboardArrowRight as Right,
+//   MdKeyboardArrowLeft as Left
+// } from 'react-icons/md'
 import CreateModal from '@/app/components/modal/create-modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSocket } from '@/app/providers/socket-provider';
+import GameRooms, { ChatRoomWithOwnerAndMembers } from '@/app/components/game/game-rooms';
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
+  const { socket, isConnected } = useSocket();
+
+  const [rooms, setRooms] = useState<ChatRoomWithOwnerAndMembers[]>();
   const onClose = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!showModal) {
       setShowModal(true);
     }
   };
+  const test = async() => {
+    const res = await fetch('/api/data/game', {method: 'POST',});
+    const result = await res.json();
+    setRooms(result);
+  }
+  useEffect(() => {
+    if(isConnected) {
+      socket?.emit('rooms', 'from next', (res: any) => {
+        if(res && res.ok) {
+          test();
+        }
+      })
+    }
+  },[isConnected])
   return (
     <>
       <div {...stylex.props(styles.container())}>
@@ -50,27 +69,16 @@ export default function Home() {
           <span {...stylex.props(styles.listText(50))}>인원</span>
           <span {...stylex.props(styles.listText(20))}>상태</span>
         </div>
-        <GameList
-          title='그림 못 그리는 사람만 오세요 제발!'
-          nick='쇼마인드'
-          userNum={1}
-          status={false}
-        />
-        <GameList
-          title='그림 못 그리는 사람만 오세요 제발!'
-          nick='쇼마인드'
-          userNum={1}
-          status={false}
-        />
+        <GameRooms rooms={rooms}/>
         <div {...stylex.props(styles.pagination())}>
-          <DoubleLeft {...stylex.props(styles.pageText(false))} />
-          <Left {...stylex.props(styles.pageText(false))} />
+          {/* <DoubleLeft {...stylex.props(styles.pageText(false))} />
+          <Left {...stylex.props(styles.pageText(false))} /> */}
           <span {...stylex.props(styles.pageText(true))}>1</span>
           <span {...stylex.props(styles.pageText(true))}>2</span>
           <span {...stylex.props(styles.pageText(true))}>3</span>
           <span {...stylex.props(styles.pageText(true))}>4</span>
-          <Right {...stylex.props(styles.pageText(false))} />
-          <DoubleRight {...stylex.props(styles.pageText(false))} />
+          {/* <Right {...stylex.props(styles.pageText(false))} />
+          <DoubleRight {...stylex.props(styles.pageText(false))} /> */}
         </div>
       </div>
     </>

@@ -11,11 +11,6 @@ import { useEffect } from "react";
 
 const TokenVerify = () => {
     const {data: session} = useSession();
-    useEffect(() => {
-        if(session) {
-            console.log(session.user.accessToken);
-        }
-    },[session])
     return <></>;
 };
 
