@@ -63,16 +63,14 @@ const Nav = () => {
                 </>
             ) : (
                 // 로그인 전
-                <>
-                    <div {...stylex.props(styles.sign())}>
-                        <Link href="/login" {...stylex.props(styles.text())}>
-                            로그인
-                        </Link>
-                        <Link href="/register" {...stylex.props(styles.text())}>
-                            회원 가입
-                        </Link>
-                    </div>
-                </>
+                <div {...stylex.props(styles.sign())}>
+                    <Link href="/login" {...stylex.props(styles.text())}>
+                        로그인
+                    </Link>
+                    <Link href="/register" {...stylex.props(styles.text())}>
+                        회원 가입
+                    </Link>
+                </div>
             )}
         </nav>
     )

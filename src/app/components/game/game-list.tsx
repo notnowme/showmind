@@ -1,9 +1,13 @@
+/**
+ * 방 목록
+*/
+
 'use client';
 
+import { useRouter } from 'next/navigation';
 
 import * as stylex from '@stylexjs/stylex'
 import { colors, fontSizes } from '@/app/styles/token.stylex'
-import { useRouter } from 'next/navigation';
 
 interface GameListProps {
     roomId: string;

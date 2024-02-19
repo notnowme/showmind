@@ -19,23 +19,19 @@ import { FaPen } from 'react-icons/fa'
 import Animation from "@/app/components/loading-pencil";
 
 interface MyImageProps {
-    no: number,
     imageUrl: string
 }
 
-const MyImage = ({ no, imageUrl }: MyImageProps) => {
+const MyImage = ({ imageUrl }: MyImageProps) => {
     const uploadRef = useRef<HTMLInputElement>(null);
+
     const [changeImg, setChangeImg] = useState(false);
     const [img, setImg] = useState('');
-
     const [showModify, setShowModify] = useState(false);
-
     const [loading, setLoading] = useState(false);
 
     const router = useRouter();
-
     const { update } = useSession();
-
 
     // 이미지 미리 보기 없애기.
     const imgReset = () => {
@@ -112,17 +108,7 @@ const MyImage = ({ no, imageUrl }: MyImageProps) => {
                 </div>
             }
             { loading && <Animation /> }
-
             <input type="file" ref={uploadRef} accept="image/jpeg, image/jpg, image/png" onChange={handleImg} hidden />
-
-            {/* <div {...stylex.props(styels.btn())} onClick={() => uploadRef?.current?.click()}>
-
-            </div>
-            <input type="file" ref={uploadRef} onChange={handleImg}/>
-            <Image
-                src={changeImg ? img : ""} alt="user" width={50} height={50}
-            />
-            <button onClick={handleImgUpload}>upload</button> */}
         </div>
 
     )

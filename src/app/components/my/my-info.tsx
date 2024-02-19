@@ -3,20 +3,19 @@
  */
 
 'use client';
+import moment from 'moment';
+
 import { useEffect, useRef, useState } from 'react';
 
 import { useSession } from "next-auth/react";
+import { useRouter } from 'next/navigation';
+
 import { UserWithOutPw } from '@/app/(main)/my/page';
 import { Login_log } from '@prisma/client'
 
+import { FaPen, FaCheckCircle, FaTimesCircle } from 'react-icons/fa'
 import * as stylex from '@stylexjs/stylex'
 import { colors, fontSizes } from "@/app/styles/token.stylex";
-
-
-import { FaPen, FaCheckCircle, FaTimesCircle } from 'react-icons/fa'
-import { useRouter } from 'next/navigation';
-
-import moment from 'moment';
 
 interface MyInfoProps {
     user: UserWithOutPw
@@ -25,6 +24,7 @@ interface MyInfoProps {
 
 const MyInfo = ({user, loginData}:MyInfoProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
+
     const [nick, setNick] = useState(user.nick);
     const [showInput, setShowInput] = useState(false);
 
@@ -104,7 +104,6 @@ const MyInfo = ({user, loginData}:MyInfoProps) => {
         } else {
             alert('이미 있는 닉네임입니다.');
         }
-        // 닉네임 변경.
     };
     useEffect(() => {
         if(showInput) {

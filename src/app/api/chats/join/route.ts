@@ -1,6 +1,6 @@
 import { authOptions } from "@/app/lib/auth";
 import { db } from "@/app/lib/db";
-import { Session, getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 interface Body {
@@ -95,7 +95,7 @@ export const DELETE = async(req: Request) => {
         if(!session) {
             return NextResponse.json({msg: 'Unauthorized'}, {status: 401});
         }
-        console.log(session.user);
+
         const room = await db.chatRoom.update({
             where: {
                 roomId: rid

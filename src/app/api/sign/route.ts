@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
         // 유저가 없다면.
         if(!user) {
-            console.log(`[SING_POST] - CANNOT FOUND USER WITH ID: ${id}`);
+            console.log(`[SIGN_POST] - CANNOT FOUND USER WITH ID: ${id}`);
             return NextResponse.json({msg: 'No ID'});
         }
 
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
         const check = await bcrypt.compare(pw, user.password);
 
         if(check) {
-            const { password, salt, joinAt, loginAt, provider, likes, ...userInfo } = user;
+            const { password, salt, joinAt, loginAt, provider, likes, roomId, imageKey, ...userInfo } = user;
             const accessToken = signJwtAccessToken(userInfo);
             const refreshToken = signJwtRefreshToken(userInfo);
 
@@ -42,6 +42,7 @@ export async function POST(req: Request) {
                 ...userInfo,
                 accessToken,
             };
+            
             // 로그인 시, 리프레시 토큰 새로 생성하여 저장.
             await db.token.upsert({
                 where: {

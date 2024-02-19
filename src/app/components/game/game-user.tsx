@@ -1,10 +1,13 @@
-import * as stylex from '@stylexjs/stylex'
-import { colors, fontSizes } from '@/app/styles/token.stylex';
+
+import Image from 'next/image';
+
+import { User } from '@prisma/client'
 
 import { FaPaintbrush } from 'react-icons/fa6'
 
-import { User } from '@prisma/client'
-import Image from 'next/image';
+import * as stylex from '@stylexjs/stylex'
+import { colors, fontSizes } from '@/app/styles/token.stylex';
+
 type UserInfo = Pick<User, 'id' | 'no' | 'nick' | 'imageUrl'>;
 
 interface GameUserProps {
@@ -13,7 +16,6 @@ interface GameUserProps {
 }
 
 const GameUser = ({isDraw, user}:GameUserProps) => {
-    console.log(user);
     return (
         <div {...stylex.props(styles.container())}>
             <div {...stylex.props(styles.nameDiv())}>
@@ -25,7 +27,7 @@ const GameUser = ({isDraw, user}:GameUserProps) => {
                 </div>
                 <div {...stylex.props(styles.scoreDiv())}>
                     <span {...stylex.props(styles.name())}>맞힌 문제</span>
-                    <span {...stylex.props(styles.score())}>5</span>
+                    <span {...stylex.props(styles.score())}>0</span>
                 </div>
             </div>
             {isDraw && <FaPaintbrush {...stylex.props(styles.icon())}/>}

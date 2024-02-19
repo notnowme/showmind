@@ -14,6 +14,7 @@ import { User, Login_log } from '@prisma/client'
 
 export type UserWithOutPw = Omit<User, 'password' | 'salt'>
 
+
 const getData = async (userNo: number) => {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/my`, {
         method: 'POST',
@@ -24,7 +25,7 @@ const getData = async (userNo: number) => {
             no: userNo
         })
     });
-    // await new Promise((resolve) => setTimeout(resolve, 5000));
+
     const result = await res.json();
     return result;
 };
@@ -47,13 +48,17 @@ const MyPage = async() => {
     const session = await getServerSession(authOptions);
     if(!session) {
         return <div>로그인하지 않았음.</div>
-    }
-    const user: UserWithOutPw = await getData(session.user.no);
-    const loginData: Login_log[] = await getLoginData(session.user.id);
+    };
+
+    const [user, loginData]: [UserWithOutPw, Login_log[]] = await Promise.all(
+        [
+            getData(session.user.no),
+            getLoginData(session.user.id)
+        ]
+    );
     return (
         <div {...stylex.props(styels.container())}>
             <MyImage
-                no={user.no}
                 imageUrl={user.imageUrl as string}
             />
             <MyInfo

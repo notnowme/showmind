@@ -3,11 +3,12 @@
 */
 'use client';
 
-import * as stylex from '@stylexjs/stylex';
-import { colors, fontSizes } from '@/app/styles/token.stylex';
-import { useChatRoomInfo } from '@/app/providers/chat-provider';
 import { useSession } from 'next-auth/react';
 
+import { useChatRoomInfo } from '@/app/providers/chat-provider';
+
+import * as stylex from '@stylexjs/stylex';
+import { colors, fontSizes } from '@/app/styles/token.stylex';
 
 const GameMenu = () => {
     const chatroom = useChatRoomInfo();

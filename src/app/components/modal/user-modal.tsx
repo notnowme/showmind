@@ -7,13 +7,13 @@
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 
 import { signOut } from 'next-auth/react'
-
-import * as stylex from '@stylexjs/stylex'
-import { colors, fontSizes } from '@/app/styles/token.stylex';
+import { useRouter } from "next/navigation";
 
 import { FaUser } from 'react-icons/fa'
 import { PiSignOutBold } from 'react-icons/pi'
-import { useRouter } from "next/navigation";
+
+import * as stylex from '@stylexjs/stylex'
+import { colors, fontSizes } from '@/app/styles/token.stylex';
 
 interface UserModalProps {
     isOpen: boolean;

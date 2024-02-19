@@ -1,16 +1,18 @@
+/**
+ * 도화지
+*/
 
+import GameMenu from './game-menu';
+import GameChat from './game-chat';
 
-import * as stylex from '@stylexjs/stylex';
-import { colors, fontSizes } from '@/app/styles/token.stylex';
+import { useChatRoomInfo } from '@/app/providers/chat-provider';
 
 import { HiMiniPencil } from 'react-icons/hi2';
 import { RiPaintFill } from 'react-icons/ri';
 import { BsFillEraserFill } from 'react-icons/bs'
 
-import GameMenu from './game-menu';
-import GameChat from './game-chat';
-import { useChatRoomInfo } from '@/app/providers/chat-provider';
-
+import * as stylex from '@stylexjs/stylex';
+import { colors, fontSizes } from '@/app/styles/token.stylex';
 
 const GameDraw = () => {
     const chatroom = useChatRoomInfo();

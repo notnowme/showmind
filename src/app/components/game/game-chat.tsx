@@ -1,12 +1,15 @@
 'use client';
+import { v4 as uuid } from 'uuid';
+
 import { useEffect, useRef, useState } from 'react';
+
 import { useSearchParams } from 'next/navigation';
+
+import { useSession } from 'next-auth/react';
+import { useSocket } from '@/app/providers/socket-provider';
 
 import * as stylex from '@stylexjs/stylex';
 import { colors, fontSizes } from '@/app/styles/token.stylex';
-import { useSession } from 'next-auth/react';
-import { useSocket } from '@/app/providers/socket-provider';
-import { v4 as uuid } from 'uuid';
 
 interface Msg {
     text: string;
@@ -117,6 +120,7 @@ const GameChat = () => {
             <div {...stylex.props(styles.chatList())}>
                 {msg.length > 0 &&
                     msg.map(data => (
+                        // 키 값 랜덤 생성을 위한 uuid
                         <div key={uuid()}
                             {...stylex.props(styles.chatting())}>
                             <span {...stylex.props(styles.chatText(data.isUser))}>

@@ -49,8 +49,6 @@ model User {
   joinAt  DateTime @default(now())
   loginAt DateTime @default(now())
 
-  @@unique([roomId])
-
 }
 
 model Token {

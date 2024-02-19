@@ -2,8 +2,9 @@
  * 방 목록 가져오기.
 */
 
-import { ChatRoom, User } from '@prisma/client'
 import GameList from './game-list';
+
+import { ChatRoom, User } from '@prisma/client'
 
 type UserInfo = Pick<User, 'id' | 'no' | 'nick' | 'imageUrl'>;
 

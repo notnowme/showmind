@@ -1,3 +1,7 @@
+/**
+ * 로그인 기록
+ */
+
 import { db } from "@/app/lib/db";
 import { NextResponse } from "next/server";
 

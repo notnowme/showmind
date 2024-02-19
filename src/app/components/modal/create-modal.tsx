@@ -5,11 +5,10 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import RadioGroup from './radio/RadioGroup';
 import Radio from './radio/Radio'
 
-import * as stylex from '@stylexjs/stylex'
-import { colors, fontSizes } from '@/app/styles/token.stylex'
-
 import { IoClose } from 'react-icons/io5'
 
+import * as stylex from '@stylexjs/stylex'
+import { colors, fontSizes } from '@/app/styles/token.stylex'
 
 interface CreateModalProps {
     isOpen: boolean;
@@ -24,11 +23,13 @@ const CreateModal = ({ isOpen, onClose }: CreateModalProps) => {
 
     const [value, setValue] = useState('open');
     const [isPrivate, setIsPrivate] = useState(false);
+
     const handleOutsideClick = (e: any) => {
         if (modalRef.current && !modalRef.current.contains(e.target)) {
             onClose(prev => !prev);
         }
     };
+
     // 방 생성.
     const handleCreate = async() => {
         if(value === 'open') {
@@ -52,6 +53,7 @@ const CreateModal = ({ isOpen, onClose }: CreateModalProps) => {
             }
         }
     };
+    
     useEffect(() => {
         if (isOpen) {
             document.addEventListener('mousedown', handleOutsideClick);

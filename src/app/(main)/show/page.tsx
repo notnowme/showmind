@@ -18,13 +18,13 @@ import { colors, fontSizes } from '@/app/styles/token.stylex';
 import { useChatRoomInfo } from '@/app/providers/chat-provider';
 
 const Show = () => {
-    const { socket, isConnected } = useSocket();
-    const query = useSearchParams();
-    const router = useRouter();
     const [isJoin, setIsJoin] = useState(false);
     const { data: session } = useSession();
-
-
+    
+    const query = useSearchParams();
+    const router = useRouter();
+    
+    const { socket, isConnected } = useSocket();
     const chatroom = useChatRoomInfo();
 
     // 방 입장
@@ -44,31 +44,8 @@ const Show = () => {
             result
         };
     };
-
+    
     // 방 퇴장
-    const handleLeave = () => {
-        const rid = query?.get('room');
-        if (!rid) {
-            console.error(`[CANNOT_READ_ROOM_ID]`);
-            return;
-        }
-        if (!session) {
-            console.error('[USER_NOT_FOUND');
-            return;
-        }
-
-        socket?.emit('leaveRoom', { rid, user: session.user }, (res: any) => {
-            console.log(res);
-            if (res && res.ok) {
-                leaved(rid).then(() => {
-                    setIsJoin(false);
-                    socket?.emit('leaved', { rid, user: session.user });
-                    router.push('/');
-                })
-            }
-        });
-    };
-
     const leaved = async (rid: string) => {
         await fetch(`/api/chats/join`, {
             method: 'DELETE',
@@ -80,10 +57,36 @@ const Show = () => {
             })
         });
     }
+    
+    const handleLeave = () => {
+        const rid = query?.get('room');
+        if (!rid) {
+            console.error(`[CANNOT_READ_ROOM_ID]`);
+            return;
+        }
+        if (!session) {
+            console.error('[USER_NOT_FOUND');
+            return;
+        }
+        if(!socket) {
+            console.error(`[SOCKET_NOT_FOUND]`);
+            return; 
+        }
+
+        socket.emit('leaveRoom', { rid, user: session.user }, (res: any) => {
+            if (res && res.ok) {
+                leaved(rid).then(() => {
+                    setIsJoin(false);
+                    socket.emit('leaved', { rid, user: session.user });
+                    router.push('/');
+                })
+            }
+        });
+    };
+
 
     // 방 정보 가져오기.
     const getRoom = async (rid: string) => {
-        console.log('get room info')
         const res = await fetch('/api/chats/join', {
             method: 'POST',
             cache: 'no-store',
@@ -98,6 +101,7 @@ const Show = () => {
         return result;
     };
 
+    // 소켓
     useEffect(() => {
         const rid = query?.get('room');
         if (!isConnected) return;
@@ -185,11 +189,7 @@ const Show = () => {
                         onClick={handleLeave}>나가기</button>
                 </div>
 
-            ) : (
-                <>
-                    <GameLoad />
-                </>
-            )}
+            ) : ( <GameLoad /> )}
         </>
     )
 };

@@ -1,5 +1,10 @@
+/**
+ * 유저 컴포넌트
+*/
+
 
 import GameUser from './game-user';
+
 import { User } from '@prisma/client'
 
 import * as stylex from '@stylexjs/stylex'
@@ -21,7 +26,6 @@ const GameUserList = ({member}: GameUserListProps) => {
                 />
             ))
             }
-
         </div>
     )
 };

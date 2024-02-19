@@ -16,7 +16,7 @@ export const POST = async(req: Request) => {
         if(!user) {
             return NextResponse.json({msg: 'Cannot Find User'}, {status: 401});
         }
-        const {password, salt, ...result} = user;
+        const {password, salt, roomId, ...result} = user;
         return NextResponse.json(result);
     } catch (error) {
         console.error(`[MY_POST_ERROR]`, error);

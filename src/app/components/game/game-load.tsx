@@ -1,6 +1,9 @@
+/**
+ * 로딩 컴포넌트
+*/
+
 import * as stylex from '@stylexjs/stylex';
-import { colors, fontSizes } from '@/app/styles/token.stylex';
-import Animation from '../loading-cat';
+import { fontSizes } from '@/app/styles/token.stylex';
 
 const GameLoad = () => {
     return (

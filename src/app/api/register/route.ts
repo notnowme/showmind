@@ -38,7 +38,7 @@ export async function POST(req: Request) {
         });
 
         // 비밀번호를 제외한 모든 정보 담기.
-        const { password, salt, ...result} = user;
+        const { password, salt, imageKey, roomId, ...result} = user;
 
         return NextResponse.json(result);
 
