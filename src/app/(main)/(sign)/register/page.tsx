@@ -37,22 +37,14 @@ const Register = () => {
         }
 
         try {
-            const res = await fetch('/api/user', {
-                method: 'POST',
-                headers: {
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify({
-                    id: idRef.current.value,
-                    type: 'id'
-                })
+            const res = await fetch(`/api/id?chk=${idRef.current.value}`, {
+                method: 'GET',
             });
-            const result = await res.json();
-            if(result.msg === 'ok') {
+            if(res.status === 200) {
                 setId(idRef.current.value);
                 setIdMsg("사용 가능한 아이디입니다.");
                 setIsChkdId(true);
-            } else {
+            } else if(res.status === 409) {
                 setIdMsg("이미 가입된 아이디입니다.");
                 setIsChkdId(false);
             }
@@ -65,22 +57,14 @@ const Register = () => {
             return;
         }
         try {
-            const res = await fetch('/api/user', {
-                method: 'POST',
-                headers: {
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify({
-                    nick: nickRef.current.value,
-                    type: 'nick'
-                })
+            const res = await fetch(`/api/nick?chk=${nickRef.current.value}`, {
+                method: 'GET',
             });
-            const result = await res.json();
-            if(result.msg === 'ok') {
+            if(res.status === 200) {
                 setNick(nickRef.current.value);
                 setNickMsg("사용 가능한 닉네임입니다.");
                 setIsChkNick(true);
-            } else {
+            } else if(res.status === 409) {
                 setNickMsg("이미 가입된 닉네임입니다.");
                 setIsChkNick(false);
             }

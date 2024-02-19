@@ -30,7 +30,7 @@ const Show = () => {
     // 방 입장
     const joined = async (rid: string) => {
         const res = await fetch(`/api/chats/join`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -47,8 +47,8 @@ const Show = () => {
     
     // 방 퇴장
     const leaved = async (rid: string) => {
-        await fetch(`/api/chats/join`, {
-            method: 'DELETE',
+        await fetch(`/api/chats/leave`, {
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -87,15 +87,9 @@ const Show = () => {
 
     // 방 정보 가져오기.
     const getRoom = async (rid: string) => {
-        const res = await fetch('/api/chats/join', {
-            method: 'POST',
+        const res = await fetch(`/api/chats/room/${rid}`, {
+            method: 'GET',
             cache: 'no-store',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                rid
-            })
         });
         const result: ChatRoomWithOwnerAndMembers = await res.json();
         return result;

@@ -1,16 +1,20 @@
+import { authOptions } from "@/app/lib/auth";
 import { db } from "@/app/lib/db";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
-interface Body {
-    no: number;
-}
-export const POST = async(req: Request) => {
-    const body: Body = await req.json();
-    const { no } = body;
+
+export const GET = async(req: Request) => {
+    const session = await getServerSession(authOptions);
+
+    if(!session) {
+        return NextResponse.json({msg: 'Unauthorized'}, {status: 401});
+    }
+    
     try {
         const user = await db.user.findFirst({
             where: {
-                no
+                no: session.user.no
             }
         });
         if(!user) {

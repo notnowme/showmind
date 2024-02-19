@@ -40,14 +40,8 @@ const MyInfo = ({user, loginData}:MyInfoProps) => {
     // 닉네임 확인
     const nickCheck = async() => {
         try {
-            const res = await fetch('/api/nick', {
-                method: 'POST',
-                headers: {
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify({
-                    nick
-                })
+            const res = await fetch(`/api/nick?chk=${nick}`, {
+                method: 'GET',
             });
             if(res.status === 200) {
                 return true;
@@ -96,6 +90,7 @@ const MyInfo = ({user, loginData}:MyInfoProps) => {
                 });
                 alert("변경했습니다.");
                 handleCancel();
+                setNick(nick);
                 router.refresh();
             } else {
                 alert("실패했습니다.");

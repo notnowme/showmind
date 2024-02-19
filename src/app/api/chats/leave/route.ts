@@ -7,7 +7,7 @@ interface Body {
     rid: string;
 };
 
-// 방 입장.
+// 방 퇴장.
 export const PATCH = async(req: Request) => {
     const body: Body = await req.json();
     const { rid } = body;
@@ -16,34 +16,22 @@ export const PATCH = async(req: Request) => {
         if(!session) {
             return NextResponse.json({msg: 'Unauthorized'}, {status: 401});
         }
-        const isJoined = await db.chatRoom.findFirst({
-            where: {
-                roomId: rid,
-                members: {
-                    some: {
-                        id: session.user.id
-                    }
-                }
-            }
-        });
-        if(isJoined) {
-            return NextResponse.json({msg: 'Already joined'}, {status: 200});
-        }
+
         const room = await db.chatRoom.update({
             where: {
                 roomId: rid
             },
             data: {
                 members: {
-                    connect: {
+                    disconnect: {
                         id: session.user.id
                     },
                 }
             }
         });
-        return NextResponse.json(room, {status: 201});
+        return NextResponse.json(room, {status: 200});
     } catch (error) {
-        console.error(`[CHAT_PUT_ERROR]`, error);
+        console.error(`[CHAT_DELETE_ERROR]`, error);
         return NextResponse.json({msg: 'Internal Server Error'}, {status: 500});
     }
 };

@@ -2,8 +2,9 @@
  * 마이페이지, Props만 내려주는 부모 역할.
  */
 
-
 import * as stylex from '@stylexjs/stylex'
+
+import { headers } from 'next/headers';
 
 import MyImage from "@/app/components/my/my-image";
 import MyInfo from "@/app/components/my/my-info";
@@ -15,45 +16,39 @@ import { User, Login_log } from '@prisma/client'
 export type UserWithOutPw = Omit<User, 'password' | 'salt'>
 
 
-const getData = async (userNo: number) => {
+const getData = async () => {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/my`, {
-        method: 'POST',
-        headers: {
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify({
-            no: userNo
-        })
+        method: 'GET',
+        headers: headers(),
+        cache: 'no-store'
     });
 
     const result = await res.json();
     return result;
 };
 
-const getLoginData = async(id: string) => {
+const getLoginData = async() => {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/data/login`, {
-        method: 'POST',
-        headers: {
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify({
-            id
-        })
+        method: 'GET',
+        headers: headers(),
+        cache: 'no-store'
     });
     const result = await res.json();
+    console.log(result);
     return result;
 }
 
 const MyPage = async() => {
     const session = await getServerSession(authOptions);
+
     if(!session) {
         return <div>로그인하지 않았음.</div>
     };
 
     const [user, loginData]: [UserWithOutPw, Login_log[]] = await Promise.all(
         [
-            getData(session.user.no),
-            getLoginData(session.user.id)
+            getData(),
+            getLoginData()
         ]
     );
     return (

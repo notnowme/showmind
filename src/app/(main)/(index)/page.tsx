@@ -31,7 +31,7 @@ export default function Home() {
     }
   };
   const test = async() => {
-    const res = await fetch('/api/data/game', {method: 'POST',});
+    const res = await fetch('/api/data/game', {method: 'GET', cache: 'no-store'});
     const result = await res.json();
     setRooms(result);
   }

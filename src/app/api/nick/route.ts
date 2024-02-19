@@ -1,5 +1,5 @@
 import { db } from "@/app/lib/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 interface Body {
     id: string;
@@ -7,11 +7,11 @@ interface Body {
 }
 
 // 닉네임 확인.
-export const POST = async(req: Request) => {
-    type query = Pick<Body, 'nick'>;
-    const body: query = await req.json();
-    const { nick } = body;
-
+export const GET = async(req: NextRequest) => {
+    const nick = req.nextUrl.searchParams.get('chk');
+    if(!nick) {
+        return NextResponse.json({msg: 'CANNOT GET NICK'}, {status: 400});
+    }
     try {
         const user = await db.user.findFirst({
             where: {
@@ -19,7 +19,7 @@ export const POST = async(req: Request) => {
             }
         });
         if(user) {
-            return NextResponse.json({msg: 'exists'}, {status: 401});
+            return NextResponse.json({msg: 'exists'}, {status: 409});
         }
         return NextResponse.json({msg: 'ok'}, {status: 200});
     } catch (error) {

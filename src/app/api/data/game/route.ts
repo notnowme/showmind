@@ -5,7 +5,7 @@
 import { db } from "@/app/lib/db";
 import { NextResponse } from "next/server";
 
-export const POST = async() => {
+export const GET = async() => {
     try {
         const room = await db.chatRoom.findMany({
             take: 5,
