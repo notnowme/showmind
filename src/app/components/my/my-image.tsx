@@ -80,7 +80,7 @@ const MyImage = ({ imageUrl }: MyImageProps) => {
         if(!changeImg) uploadRef?.current?.click();
     };
     return (
-        <div {...stylex.props(styels.image())}
+        <picture {...stylex.props(styels.image())}
             onMouseEnter={() => setShowModify(true)}
             onMouseLeave={() => setShowModify(false)}
         >
@@ -109,7 +109,7 @@ const MyImage = ({ imageUrl }: MyImageProps) => {
             }
             { loading && <Animation /> }
             <input type="file" ref={uploadRef} accept="image/jpeg, image/jpg, image/png" onChange={handleImg} hidden />
-        </div>
+        </picture>
 
     )
 };

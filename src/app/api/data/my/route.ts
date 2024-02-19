@@ -1,6 +1,6 @@
 /**
- * 로그인 기록
- */
+ * 유저 정보.
+*/
 
 import { db } from "@/app/lib/db";
 import { NextResponse } from "next/server";
@@ -16,18 +16,18 @@ export const POST = async(req: Request) => {
         return NextResponse.json({msg: 'Unauthorized'}, {status: 400});
     }
     try {
-        const result = await db.login_log.findMany({
+        const user = await db.user.findFirst({
             where: {
                 id
-            },
-            orderBy: {
-                login_date: 'desc'
-            },
-            take: 3
+            }
         });
+        if(!user) {
+            return NextResponse.json({msg: 'Cannot Find User'}, {status: 401});
+        }
+        const {password, salt, roomId, ...result} = user;
         return NextResponse.json(result, {status: 200});
     } catch (error) {
-        console.error(`[DATA/LOGIN_POST_ERROR]`, error);
-        return NextResponse.json({msg: 'Internel Server Error'}, {status: 500});
+        console.error(`[MY_POST_ERROR]`, error);
+        return NextResponse.json({msg:'Internal Server Error'}, {status: 500})
     }
-};
+}

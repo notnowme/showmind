@@ -26,10 +26,10 @@ export default function RootLayout({
         <NextSessionProvider>
           <SocketProvider>
             <TokenVerify />
-            <div id="container" {...stylex.props(styles.container())}>
+            <main id="container" {...stylex.props(styles.container())}>
               <Nav />
               {children}
-            </div>
+            </main>
           </SocketProvider>
         </NextSessionProvider>
       </body>

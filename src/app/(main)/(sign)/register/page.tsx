@@ -4,10 +4,12 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 
-import * as stylex from '@stylexjs/stylex'
-import { colors, fontSizes } from '@/app/styles/token.stylex';
+
 import ChkDiv from '@/app/components/register/chk-div';
 import InputPw from '@/app/components/register/input-pw';
+
+import * as stylex from '@stylexjs/stylex'
+import { registerStyles } from '@/app/styles/register';
 
 import { IoIosArrowForward } from 'react-icons/io'
 
@@ -29,6 +31,8 @@ const Register = () => {
 
     const [idMsg, setIdMsg] = useState("");
     const [nickMsg, setNickMsg] = useState("");
+
+
 
     // 아이디 중복 확인
     const chkId = async() => {
@@ -174,47 +178,3 @@ const Register = () => {
 };
 
 export default Register;
-
-const registerStyles = stylex.create({
-    stepDiv: () => ({
-        marginTop: '40px',
-        marginBottom: '40px',
-        width: '400px',
-        display: 'flex',
-        justifyContent: 'center'
-    }),
-    text: () => ({
-        fontSize: fontSizes.base,
-        marginRight: '20px'
-    }),
-    step: (state) => ({
-        color: state ? colors.secondary : colors.done
-    }),
-    btn: () => ({
-        marginTop: '5px',
-        width: '400px',
-        height: '50px',
-        outline: 'none',
-        border: 'none',
-        borderRadius: '5px',
-        color: colors.secondary,
-        fontSize: fontSizes.lg,
-        fontWeight: 500,
-        backgroundColor: '#2F3136',
-        opacity: {
-            default: '0.8',
-            ':hover': '1'
-        },
-        cursor: 'pointer'
-    }),
-    next: (state) => ({
-        backgroundColor: state ? colors.personal : '#2a2a2a',
-        color: state ? 'black' : colors.done,
-    }),
-    margin: () => ({
-        marginBottom: '20px'
-    }),
-    done: () => ({
-        color: colors.done
-    })
-});

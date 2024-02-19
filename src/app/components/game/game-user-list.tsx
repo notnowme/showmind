@@ -17,7 +17,7 @@ interface GameUserListProps {
 const GameUserList = ({member}: GameUserListProps) => {
 
     return (
-        <div {...stylex.props(styles.container())}>
+        <ul {...stylex.props(styles.container())}>
             { member && member.map(data => (
                 <GameUser
                     key={data.id}
@@ -26,7 +26,7 @@ const GameUserList = ({member}: GameUserListProps) => {
                 />
             ))
             }
-        </div>
+        </ul>
     )
 };
 

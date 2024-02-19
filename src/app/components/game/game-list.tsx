@@ -20,10 +20,11 @@ interface GameListProps {
 const GameList = ({roomId, title, nick, userNum, status}: GameListProps) => {
     const router = useRouter();
     const handleMove = () => {
+      // 인원 수나 비밀번호 등을 확인한 뒤 입장해야 됨.
       router.push(`/show?room=${roomId}`);
     }
     return (
-        <div {...stylex.props(styles.infoContainer())}>
+        <li {...stylex.props(styles.infoContainer())}>
             <div {...stylex.props(styles.info())}>
                 <div {...stylex.props(styles.infoSize(360))}>
                     <span onClick={handleMove}
@@ -41,7 +42,7 @@ const GameList = ({roomId, title, nick, userNum, status}: GameListProps) => {
                     <span {...stylex.props(styles.infoText(status))}>{status ? "진행" : "대기"}</span>
                 </div>
             </div>
-        </div>
+        </li>
     )
 };
 
@@ -52,7 +53,6 @@ const styles = stylex.create({
       display: 'flex',
       width: '100%',
       flexDirection: 'column',
-      marginBottom: '10px'
     }),
     info: () => ({
       display: 'flex',

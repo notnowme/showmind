@@ -2,65 +2,43 @@
  * 마이페이지, Props만 내려주는 부모 역할.
  */
 
-import * as stylex from '@stylexjs/stylex'
-
-import { headers } from 'next/headers';
-
 import MyImage from "@/app/components/my/my-image";
 import MyInfo from "@/app/components/my/my-info";
 
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/lib/auth';
-import { User, Login_log } from '@prisma/client'
+import { useServerApi } from '@/app/hooks/useServerApi';
 
-export type UserWithOutPw = Omit<User, 'password' | 'salt'>
-
-
-const getData = async () => {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/my`, {
-        method: 'GET',
-        headers: headers(),
-        cache: 'no-store'
-    });
-
-    const result = await res.json();
-    return result;
-};
-
-const getLoginData = async() => {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/data/login`, {
-        method: 'GET',
-        headers: headers(),
-        cache: 'no-store'
-    });
-    const result = await res.json();
-    console.log(result);
-    return result;
-}
+import * as stylex from '@stylexjs/stylex'
 
 const MyPage = async() => {
     const session = await getServerSession(authOptions);
-
+    
     if(!session) {
         return <div>로그인하지 않았음.</div>
     };
 
-    const [user, loginData]: [UserWithOutPw, Login_log[]] = await Promise.all(
+    const { getUserInfo, getLoginData } = useServerApi();
+
+    const [user, loginData] = await Promise.all(
         [
-            getData(),
-            getLoginData()
+            getUserInfo(session.user.id),
+            getLoginData(session.user.id)
         ]
     );
+    if(user?.res !== 200 || loginData?.res !== 200) {
+        return <div>정보를 가져오지 못함</div>
+    }
     return (
-        <div {...stylex.props(styels.container())}>
+        <section {...stylex.props(styels.container())}>
             <MyImage
-                imageUrl={user.imageUrl as string}
+                imageUrl={user.result.imageUrl as string}
             />
             <MyInfo
-                user={user}
-                loginData={loginData}
+                user={user.result}
+                loginData={loginData.result}
             />
-        </div>
+        </section>
     )
 };
 

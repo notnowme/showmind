@@ -12,6 +12,9 @@
   font-family: 'Pretendard-Regular';
   font-size: 62.5%;
 }
+ul,li,ol {
+  list-style: none;
+}
 
 html,
 body {

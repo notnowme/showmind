@@ -14,7 +14,7 @@ import {
 
 import { ChatRoomWithOwnerAndMembers } from '@/app/components/game/game-rooms';
 
-interface ContextType {
+export interface ContextType {
     room: ChatRoomWithOwnerAndMembers | null;
     setRoom: Dispatch<SetStateAction<ChatRoomWithOwnerAndMembers | null>>;
 }

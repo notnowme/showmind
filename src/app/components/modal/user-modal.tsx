@@ -4,7 +4,7 @@
 */
 'use client';
 
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import { signOut } from 'next-auth/react'
 import { useRouter } from "next/navigation";
@@ -21,16 +21,10 @@ interface UserModalProps {
 
 }
 
-const UserModal = ({isOpen, onClose}: UserModalProps) => {
-    const modalRef = useRef<HTMLDivElement>(null);
-    const router = useRouter();
+const UserModal = ({ isOpen, onClose }: UserModalProps) => {
+    if (!isOpen) return null;
 
-    // 바깥쪽 영역 클릭했을 시 모달창 닫기
-    const handleOutsideClick = (e: any) => {
-        if(modalRef.current && !modalRef.current.contains(e.target)) {
-            onClose(prev => !prev);
-        }
-    };
+    const router = useRouter();
 
     // mypage로 이동
     const handleMypage = () => {
@@ -39,42 +33,28 @@ const UserModal = ({isOpen, onClose}: UserModalProps) => {
     };
 
     // 로그아웃
-    const handleSignOut = async() => {
+    const handleSignOut = async () => {
         onClose(prev => !prev);
-        await signOut({redirect: false}).then(() => {
+        await signOut({ redirect: false }).then(() => {
             router.push('/');
         });
     };
 
-    useEffect(() => {
-        if (isOpen) {
-            document.addEventListener('mousedown', handleOutsideClick);
-        } else {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        }
-        return () => {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        }
-    },[isOpen])
     return (
-        <>
-        {isOpen && (
-            <div ref={modalRef} {...stylex.props(styles.modal())}>
-                <div {...stylex.props(styles.box())}
-                    onClick={handleMypage}
-                >
-                    <FaUser {...stylex.props(styles.icon())}/>
-                    <span {...stylex.props(styles.text())}>마이페이지</span>
-                </div>
-                <div {...stylex.props(styles.box())}
-                    onClick={handleSignOut}
-                >
-                    <PiSignOutBold {...stylex.props(styles.icon())}/>
-                    <span {...stylex.props(styles.text())}>로그아웃</span>
-                </div>
-            </div>
-        )}
-        </>
+        <ul {...stylex.props(styles.modal())}>
+            <li {...stylex.props(styles.box())}
+                onClick={handleMypage}
+            >
+                <FaUser {...stylex.props(styles.icon())} />
+                <span {...stylex.props(styles.text())}>마이페이지</span>
+            </li>
+            <li {...stylex.props(styles.box())}
+                onClick={handleSignOut}
+            >
+                <PiSignOutBold {...stylex.props(styles.icon())} />
+                <span {...stylex.props(styles.text())}>로그아웃</span>
+            </li>
+        </ul>
     )
 };
 

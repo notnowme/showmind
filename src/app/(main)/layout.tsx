@@ -11,9 +11,9 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div {...stylex.props(styles.container())}>
+    <section {...stylex.props(styles.container())}>
         {children}
-    </div>
+    </section>
   );
 }
 

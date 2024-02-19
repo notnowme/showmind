@@ -11,12 +11,13 @@ import * as stylex from '@stylexjs/stylex'
 import { colors, fontSizes } from '@/app/styles/token.stylex'
 
 interface CreateModalProps {
-    isOpen: boolean;
+    isOpen: boolean
     onClose: Dispatch<SetStateAction<boolean>>;
 }
 
 const CreateModal = ({ isOpen, onClose }: CreateModalProps) => {
-    const modalRef = useRef<HTMLDivElement>(null);
+
+    if (!isOpen) return null;
 
     const nameRef = useRef<HTMLInputElement>(null);
     const pwRef = useRef<HTMLInputElement>(null);
@@ -24,21 +25,15 @@ const CreateModal = ({ isOpen, onClose }: CreateModalProps) => {
     const [value, setValue] = useState('open');
     const [isPrivate, setIsPrivate] = useState(false);
 
-    const handleOutsideClick = (e: any) => {
-        if (modalRef.current && !modalRef.current.contains(e.target)) {
-            onClose(prev => !prev);
-        }
-    };
-
     // 방 생성.
-    const handleCreate = async() => {
-        if(value === 'open') {
+    const handleCreate = async () => {
+        if (value === 'open') {
             const name = nameRef.current?.value;
             try {
                 const res = await fetch('/api/game/create', {
                     method: 'POST',
                     headers: {
-                        'Content-Type':'application/json'
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         name,
@@ -53,77 +48,77 @@ const CreateModal = ({ isOpen, onClose }: CreateModalProps) => {
             }
         }
     };
-    
-    useEffect(() => {
-        if (isOpen) {
-            document.addEventListener('mousedown', handleOutsideClick);
-        } else {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        }
-        return () => {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        }
-    }, [isOpen]);
+
 
     // 비밀번호 입력 온오프
     useEffect(() => {
-        if(value === 'private') {
+        if (value === 'private') {
             setIsPrivate(true);
         } else {
             setIsPrivate(false);
         }
     }, [value])
     return (
-        <>
-            {isOpen &&
-                <div ref={modalRef} {...stylex.props(styles.create())}>
+        <div {...stylex.props(styles.modal())}>
+            <div {...stylex.props(styles.create())}>
+                <div {...stylex.props(styles.top())}>
                     <div {...stylex.props(styles.top())}>
-                        <div {...stylex.props(styles.top())}>
-                            <RadioGroup label="room" value={value} onChange={setValue}>
-                                <Radio value="open">
-                                    <span {...stylex.props(styles.text())}>공개</span>
-                                </Radio>
-                                <Radio value="private">
-                                    <span {...stylex.props(styles.text())}>비공개</span>
-                                </Radio>
-                            </RadioGroup>
-                        </div>
-                        <div>
-                            <IoClose onClick={() => onClose(prev => !prev)}
-                                {...stylex.props(styles.icon())} />
-                        </div>
+                        <RadioGroup label="room" value={value} onChange={setValue}>
+                            <Radio value="open">
+                                <span {...stylex.props(styles.text())}>공개</span>
+                            </Radio>
+                            <Radio value="private">
+                                <span {...stylex.props(styles.text())}>비공개</span>
+                            </Radio>
+                        </RadioGroup>
                     </div>
-                    <div {...stylex.props(styles.inputDiv())}>
-                        <div {...stylex.props(styles.textDiv())}>
-                            <h1 {...stylex.props(styles.title())}>방 제목</h1>
-                            <span {...stylex.props(styles.msg())}>방 제목을 입력해 주세요</span>
-                        </div>
-                        <input type='text' ref={nameRef}
-                            {...stylex.props(styles.input())}
-                        />
+                    <div>
+                        <IoClose onClick={() => onClose(prev => !prev)}
+                            {...stylex.props(styles.icon())} />
                     </div>
-                    <div {...stylex.props(styles.inputDiv())}>
-                        <div {...stylex.props(styles.textDiv())}>
-                            <h1 {...stylex.props(styles.title(), styles.disabledText(isPrivate))}>비밀번호</h1>
-                            <span {...stylex.props(styles.msg())}>비밀번호를 입력해 주세요</span>
-                        </div>
-                        <input type='text' disabled={!isPrivate} ref={pwRef}
-                            {...stylex.props(styles.input(), styles.disbledInput(isPrivate))}
-                        />
-                    </div>
-                    <button onClick={handleCreate}
-                        {...stylex.props(styles.btn())}>
-                        방 생성하기
-                    </button>
                 </div>
-            }
-        </>
+                <div {...stylex.props(styles.inputDiv())}>
+                    <div {...stylex.props(styles.textDiv())}>
+                        <h1 {...stylex.props(styles.title())}>방 제목</h1>
+                        <span {...stylex.props(styles.msg())}>방 제목을 입력해 주세요</span>
+                    </div>
+                    <input type='text' ref={nameRef}
+                        {...stylex.props(styles.input())}
+                    />
+                </div>
+                <div {...stylex.props(styles.inputDiv())}>
+                    <div {...stylex.props(styles.textDiv())}>
+                        <h1 {...stylex.props(styles.title(), styles.disabledText(isPrivate))}>비밀번호</h1>
+                        <span {...stylex.props(styles.msg())}>비밀번호를 입력해 주세요</span>
+                    </div>
+                    <input type='text' disabled={!isPrivate} ref={pwRef}
+                        {...stylex.props(styles.input(), styles.disbledInput(isPrivate))}
+                    />
+                </div>
+                <button onClick={handleCreate}
+                    {...stylex.props(styles.btn())}>
+                    방 생성하기
+                </button>
+            </div>
+        </div>
     )
 };
 
 export default CreateModal;
 
 const styles = stylex.create({
+    modal: () => ({
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        zIndex: 10
+    }),
     textDiv: () => ({
         display: 'flex',
         columnGap: '10px',
