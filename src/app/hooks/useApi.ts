@@ -32,7 +32,11 @@ export const useApi = () => {
         });
     };
 
-    // 방 정보 하나 가져오기.
+    /**
+     * 방 정보를 가져옴
+     * @param {string} rid 방 아이디
+     * @returns {ChatRoomWithOwnerAndMembers}
+     */
     const getRoom = async (rid: string) => {
         const res = await fetch(`/api/game/${rid}`, {
             method: 'GET',

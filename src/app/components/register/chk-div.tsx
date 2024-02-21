@@ -7,8 +7,8 @@
 import { forwardRef } from 'react';
 import * as stylex from '@stylexjs/stylex'
 
-import { signStyles } from '@/app/(main)/(sign)/login/page';
 import { colors, fontSizes } from '@/app/styles/token.stylex';
+import { signStyles } from '@/app/styles/login';
 
 interface ChkDivProps {
     forwardRef: React.Ref<HTMLInputElement>;
@@ -32,7 +32,7 @@ const ChkDiv = forwardRef(({ forwardRef, chk, title, msg, isChk }: ChkDivProps, 
         </div>
     )
 });
-
+ChkDiv.displayName = 'ChkDiv';
 export default ChkDiv;
 
 const registerStyles = stylex.create({

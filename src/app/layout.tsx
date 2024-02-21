@@ -8,7 +8,9 @@ import TokenVerify from "@/app/components/token-verify";
 
 import "./globals.css"
 import * as stylex from '@stylexjs/stylex'
-import { colors } from '@/app/styles/token.stylex'
+import { colors } from "./styles/token.stylex";
+import Head from "next/head";
+
 
 export const metadata: Metadata = {
   title: "SHOWMIND",
@@ -26,7 +28,7 @@ export default function RootLayout({
         <NextSessionProvider>
           <SocketProvider>
             <TokenVerify />
-            <main id="container" {...stylex.props(styles.container())}>
+            <main id="container" {...stylex.props(styles.container)}>
               <Nav />
               {children}
             </main>
@@ -41,15 +43,12 @@ export default function RootLayout({
 // 객체로 쓰지 말고 함수 형태로 써야 한다.
 // 라이브러리 오류일 가능성이 높아 보임.
 const styles = stylex.create({
-  primary: () => ({
-    color: colors.primary
-  }),
-  container: () => ({
+  container: {
     width: '1600px',
     height: '900px',
     backgroundColor: colors.dp01,
     borderRadius: '5px',
     display: 'flex',
     flexDirection: 'column'
-  })
+  }
 });

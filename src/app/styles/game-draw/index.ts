@@ -94,10 +94,10 @@ export const styles = stylex.create({
         backgroundColor: colors.dp01,
         borderRadius: '5px'
     }),
-    icon: () => ({
+    icon: (state) => ({
         width: '20px',
         height: '20px',
-        color: colors.secondary
+        color: state ? colors.personal : colors.secondary
     }),
     deleteDiv: () => ({
         display: 'flex',

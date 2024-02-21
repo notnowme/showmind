@@ -16,14 +16,21 @@ interface CreateModalProps {
 }
 
 const CreateModal = ({ isOpen, onClose }: CreateModalProps) => {
-
-    if (!isOpen) return null;
-
     const nameRef = useRef<HTMLInputElement>(null);
     const pwRef = useRef<HTMLInputElement>(null);
-
     const [value, setValue] = useState('open');
     const [isPrivate, setIsPrivate] = useState(false);
+
+    // 비밀번호 입력 온오프
+    useEffect(() => {
+        if (value === 'private') {
+            setIsPrivate(true);
+        } else {
+            setIsPrivate(false);
+        }
+    }, [value])
+
+    if (!isOpen) return null;
 
     // 방 생성.
     const handleCreate = async () => {
@@ -49,15 +56,6 @@ const CreateModal = ({ isOpen, onClose }: CreateModalProps) => {
         }
     };
 
-
-    // 비밀번호 입력 온오프
-    useEffect(() => {
-        if (value === 'private') {
-            setIsPrivate(true);
-        } else {
-            setIsPrivate(false);
-        }
-    }, [value])
     return (
         <div {...stylex.props(styles.modal())}>
             <div {...stylex.props(styles.create())}>

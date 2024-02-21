@@ -11,12 +11,12 @@ import * as stylex from '@stylexjs/stylex';
 import { colors, fontSizes } from '@/app/styles/token.stylex';
 
 const GameMenu = () => {
+    const { data: session } = useSession();
     const chatroom = useChatRoomInfo();
     if (!chatroom) {
         return;
     }
     const { room } = chatroom;
-    const { data: session } = useSession();
     const isOwner = room?.owner.id === session?.user.id;
     const isStart = room?.members.length !== 1;
     return (

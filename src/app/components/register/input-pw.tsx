@@ -5,8 +5,9 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import stylex from "@stylexjs/stylex";
-import { signStyles } from "@/app/(main)/(sign)/login/page";
+
 import { colors } from "@/app/styles/token.stylex";
+import { signStyles } from "@/app/styles/login";
 
 interface InputPwProps {
     password: string;

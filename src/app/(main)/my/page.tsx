@@ -13,12 +13,12 @@ import * as stylex from '@stylexjs/stylex'
 
 const MyPage = async() => {
     const session = await getServerSession(authOptions);
+    const { getUserInfo, getLoginData } = useServerApi();
     
     if(!session) {
         return <div>로그인하지 않았음.</div>
     };
 
-    const { getUserInfo, getLoginData } = useServerApi();
 
     const [user, loginData] = await Promise.all(
         [

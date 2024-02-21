@@ -22,9 +22,9 @@ interface UserModalProps {
 }
 
 const UserModal = ({ isOpen, onClose }: UserModalProps) => {
+    const router = useRouter();
     if (!isOpen) return null;
 
-    const router = useRouter();
 
     // mypage로 이동
     const handleMypage = () => {
