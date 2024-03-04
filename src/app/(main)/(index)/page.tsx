@@ -44,12 +44,14 @@ export default function Home() {
   }, [isConnected])
   return (
     <section {...stylex.props(styles.container())}>
+      {isOpen &&
         <div ref={modalRef}>
           <CreateModal
             isOpen={isOpen}
             onClose={closeModal}
           />
         </div>
+      }
       <header {...stylex.props(styles.top())}>
         <h1 {...stylex.props(styles.title())}>개설된 방 목록</h1>
         <button {...stylex.props(styles.btn())}

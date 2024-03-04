@@ -12,7 +12,7 @@ import {
     useState
 } from 'react';
 
-type Tool = "pen" | "eraser" | "paint";
+type Tool = "pen" | "eraser" | "paint" | "new";
 
 export interface DrawType {
     tool: Tool;

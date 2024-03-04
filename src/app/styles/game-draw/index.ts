@@ -99,8 +99,12 @@ export const styles = stylex.create({
         height: '20px',
         color: state ? colors.personal : colors.secondary
     }),
+    iconColor: (state, color) => ({
+        color: state ? color : colors.secondary
+    }),
     deleteDiv: () => ({
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100px',
@@ -111,12 +115,33 @@ export const styles = stylex.create({
     }),
     deleteText: () => ({
         fontSize: fontSizes.sm,
-        color: colors.third
+        color: {
+            default: colors.third,
+            ':hover': colors.personal
+        },
+        cursor: 'pointer'
+        
     }),
     colorDiv: () => ({
         width: '100%',
         height: '100px',
         borderRadius: '5px',
-        backgroundColor: colors.dp01
+        backgroundColor: colors.dp01,
+        padding: '5px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px'
+    }),
+    colorIconDiv: () => ({
+        width: '100%',
+        display: 'flex',
+        gap: '10px',
+        flexWrap: 'wrap'
+    }),
+    colorIcon: (color) => ({
+        width: '20px',
+        height: '20px',
+        borderRadius: '5px',
+        backgroundColor: color
     })
 })

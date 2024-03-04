@@ -14,6 +14,15 @@ export const styles = stylex.create({
       backgroundColor: 'rgba(0,0,0,0.6)',
       zIndex: 10
     }),
+    create: () => ({
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: '10px',
+      width: '600px',
+      backgroundColor: colors.dp00,
+      borderRadius: '5px'
+  }),
     container: () => ({
       width: '800px',
       borderRadius: '5px',
